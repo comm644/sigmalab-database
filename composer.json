@@ -1,0 +1,16 @@
+{
+  "name": "sigmalab/database",
+  "description": "Sigmalab Database Object Relation Mapper (ex. Temis.SQL)",
+  "version": "3.0.1",
+  "license": "Apache-2.0",
+  "type": "library",
+  "homepage": "https://sigmalab.ru",
+  "autoload": {
+    "psr-4": {
+      "Sigmalab\\": "src\\"
+    }
+  },
+  "require": {
+    "sigmalab/diagnostics": "1.0.*"
+  }
+}

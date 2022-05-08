@@ -1,0 +1,112 @@
+<database type="InnoDB" encoding="cp1251">
+
+  <prefix name="table_"/>
+  <baseclass name="\Sigmalab\Database\Core\DBObject"/>
+  <namespace name="Database"/>
+
+  <table name="t_data" class="Data" description="presents data object">
+    <column name="data_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="date" type="datetime" default="null"/>
+    <column name="value" type="int" default="null"/>
+    <column name="string" type="varchar" length="64" default="null"/>
+    <column name="text" type="text" default="null" index="yes"/>
+<!--    <column name="enum" type="enum('red','black')" default="red"/>-->
+    <column name="blob" type="blob" default="null"/>
+    <column name="real" type="float" default="null"/>
+
+    <column name="dictionary_id" type="int" default="null"
+      foreign-table="t_dictionary" foreign-key="dictionary_id"
+      member="dictionary" class-ns="Database" class="Dictionary"/>
+
+  </table>
+
+  <table name="t_dictionary" class="Dictionary" description="presents dictionary object">
+    <column name="dictionary_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="text" type="varchar" length="64" default="null"/>
+  </table>
+
+  <table name="t_link" type="relation" description="presents many-to-many link" >
+    <column name="link_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="data_id" type="int" default="not null"
+      foreign-table="t_data" foreign-key="data_id"
+      member="data" class="Data" class-ns="Database"/>
+	
+    <column name="dictionary_id" type="int" default="not null"
+      foreign-table="t_dictionary" foreign-key="dictionary_id"
+      member="dictionary" class="Dictionary" class-ns="Database" on-delete="set null"/>
+  </table>
+
+  <table name="t_another_link" type="relation" class="Another" description="presents many-to-many link" >
+    <column name="another_link_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="owner_id" type="int" default="not null"
+      foreign-table="t_data" foreign-key="data_id"
+      member="data" class="Data"/>
+	
+    <column name="child_id" type="int" default="not null"
+      foreign-table="t_dictionary" foreign-key="dictionary_id"
+      member="dictionary" class="Dictionary" on-delete="cascade"/>
+  </table>
+
+  <table name="t_base" >
+    <column name="base_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="baseData" type="int" default="0"/>
+  </table>
+
+  <table name="t_details" baseclass="table_t_base">
+    <column name="details_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="base_id" type="int" default="not null"
+            foreign-table="t_base" foreign-key="base_id" on-delete="cascade"
+            parent-key="yes"/>
+
+    <column name="detailsData" type="int" default="0"/>
+  </table>
+
+  <table name="t_subdetails" baseclass="table_t_details">
+    <column name="subdetails_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="details_id" type="int" default="not null"
+            foreign-table="t_details" foreign-key="details_id" on-delete="cascade"
+            parent-key="yes"/>
+
+    <column name="subDetailsData" type="int" default="0"/>
+  </table>
+
+  <table name="t_propertiesOne" baseclass="table_t_base" basecalss-ns="Database">
+    <column name="propertiesOne_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="base_id" type="int" default="not null"
+            foreign-table="t_base" foreign-key="base_id" on-delete="cascade"
+            parent-key="yes"
+            />
+    <column name="propertiesOneData" type="int" default="0"/>
+  </table>
+
+  <table name="t_propertiesTwo" baseclass="table_t_base" basecalss-ns="Database">
+    <column name="propertiesTwo_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="base_id" type="int" default="not null"
+            foreign-table="t_base" foreign-key="base_id" on-delete="cascade"
+            parent-key="yes"
+        />
+    <column name="propertiesTwoData" type="int" default="0"/>
+  </table>
+
+  <table name="t_dataNotNullable" class="DataNotNullable">
+    <column name="dataNotNullableId" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="valueA" type="varchar"  length="255" default=""/>
+    <column name="valueB" type="varchar"  length="255" default=""/>
+  </table>
+
+  <table name="t_datatime" class="DataDateTime">
+    <column name="datatime_id" type="int" primary-key="yes" auto-increment="yes"/>
+
+    <column name="value" type="datetime" default="null"/>  </table>
+
+</database>
